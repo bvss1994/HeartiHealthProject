@@ -29,7 +29,7 @@ pipeline {
                 
             stage('Build docker image and push to docker hub') {
          steps {
-            sh label: '', script: '''sudo su
+            sh label: '', script: '''
             cd /home/bitnami/HeartiHealthProject
             docker login -u sowmyabv123 -p nov091994
             docker build -t sowmyabv123/hearti-health-app .
