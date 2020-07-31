@@ -11,8 +11,6 @@ COPY package*.json ./
  
 # Installs all node packages
 RUN npm install
-RUN npm run build
-RUN ng build --prod
 
 # Copies everything over to Docker environment
 COPY . .
