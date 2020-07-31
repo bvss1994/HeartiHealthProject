@@ -14,8 +14,7 @@ pipeline {
 	   stage('npm install package'){
                 steps{
                     sh label: '', script: '''
-                         npm install  --save-dev  --unsafe-perm node-sass
-                         
+                         npm install  --save-dev  --unsafe-perm node-sass    
                      '''
                      echo 'Installing packages completed...'
                     }
