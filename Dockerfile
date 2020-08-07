@@ -9,3 +9,4 @@ RUN npm run build --prod
 EXPOSE 4200
 FROM nginx:1.17.1-alpine
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+CMD [ "npm", "start" ]
