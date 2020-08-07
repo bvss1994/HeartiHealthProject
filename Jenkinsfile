@@ -24,7 +24,7 @@ pipeline {
                stage ('Archive') {
                 steps{
                   echo "Archiving Project"
-                  archiveArtifacts artifacts: '/var/lib/jenkins/workspace/Hearti-Health-docker/dist/*', followSymlinks: false
+                  archiveArtifacts artifacts: '/var/lib/jenkins/workspace/Hearti-Health-docker/dist/', followSymlinks: false
                 }
               }
                stage ('Build Docker Image') {
