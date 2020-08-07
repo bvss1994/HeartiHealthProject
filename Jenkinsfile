@@ -1,16 +1,11 @@
 pipeline {
+   environment {
+    registry = "sowmyabv123/hearti-health-app"
+    registryCredential = 'docker_hub'
+    dockerImage = ''
+  }
    agent any
-   tools {
-		maven 'Maven-3.6.3'
-		jdk 'jdk1.8.0_231'
-    }
    stages {
-       stage('Git-Checkout') {
-         steps {
-            echo 'Checking out from Gitlab Repo'
-            git 'https://github.com/bvss1994/HeartiHealthProject.git'
-         }
-      }
 	   stage('npm install package'){
                 steps{
                     sh label: '', script: '''
@@ -28,17 +23,40 @@ pipeline {
                         
                     }
                 }
-                
-            stage('Build docker image and push to docker hub') {
-         steps {
-            sh label: '', script: '''
-            cd /home/bitnami/HeartiHealthProject
-            docker login -u sowmyabv123 -p nov091994
-            docker build -t sowmyabv123/hearti-health-app .
-            docker push sowmyabv123/hearti-health-app
-            '''
-         }
-      }    
+               stage ('Archive') {
+                steps{
+                  echo "Archiving Project"
+                  archiveArtifacts artifacts: 'dist/*.zip', followSymlinks: false
+                }
+              }
+               stage ('Build Docker Image') {
+          steps{
+            echo "Building Docker Image"
+             script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+          }
+        }
+        stage ('Push Docker Image') {
+          steps{
+            echo "Pushing Docker Image"
+             script {
+              docker.withRegistry( '', registryCredential ) {
+                  dockerImage.push()
+                  dockerImage.push('latest')
+              }
+            }
+          }
+        }
+        stage ('Deploy to Dev') {
+          steps{
+            echo "Deploying to Dev Environment"
+            sh "docker rm -f hearti-health-app || true"
+            sh "docker run -d --name=hearti-health-app -p 8081:8080 sowmyabv123/hearti-health-app"
+          }
+        }
+  }
+}
 	  
 }
 }
