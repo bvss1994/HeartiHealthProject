@@ -1,7 +1,7 @@
 # Docker Image which is used as foundation to create
 # a custom Docker Image with this Dockerfile
 FROM node:14
- 
+VOLUME /tmp 
 # A directory within the virtualized Docker environment
 # Becomes more relevant when using Docker Compose later
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY package*.json ./
  
 # Installs all node packages
 RUN npm install
-
+RUN npm run build:hhp
 # Copies everything over to Docker environment
 COPY . .
  
