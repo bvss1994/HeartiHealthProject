@@ -1,22 +1,11 @@
-# Docker Image which is used as foundation to create
-# a custom Docker Image with this Dockerfile
-FROM node:14
-VOLUME /tmp 
-# A directory within the virtualized Docker environment
-# Becomes more relevant when using Docker Compose later
-WORKDIR /app
- 
-# Copies package.json and package-lock.json to Docker environment
-COPY package*.json ./
- 
-# Installs all node packages
+### STAGE 1: Build ###
+FROM node:14 AS build
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
 RUN npm install
-RUN npm run build --prod
-# Copies everything over to Docker environment
 COPY . .
- 
-# Uses port which is used by the actual application
+RUN npm run build --prod
+### STAGE 2: Run ###
 EXPOSE 8080
- 
-# Finally runs the application
-CMD [ "npm", "start" ]
+FROM nginx:1.17.1-alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
