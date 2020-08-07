@@ -44,7 +44,7 @@ pipeline {
           steps{
             echo "Deploying to Dev Environment"
             sh "docker rm -f hearti-health-app || true"
-            sh "docker run -d --name=hearti-health-app -p 8081:4200 sowmyabv123/hearti-health-app"
+            sh "docker run -d --name=hearti-health-app -p 8081:8080 sowmyabv123/hearti-health-app"
           }
         }
   }
