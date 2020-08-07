@@ -10,8 +10,6 @@ pipeline {
                 steps{
                     sh label: '', script: '''
                          npm install  --save-dev  --unsafe-perm node-sass
-                         npm start 
-                         npm stop
                      '''
                      echo 'Installing packages completed...'
                     }
