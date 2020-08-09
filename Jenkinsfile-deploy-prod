@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  stages{  
+  stages {  
       stage('Deploy to Prod1') {
                 steps {
                   echo "Deploying to Prod1"
