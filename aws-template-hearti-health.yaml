@@ -28,7 +28,7 @@ Resources:
           yum install docker
           service docker start
           usermod -a -G docker ec2-user
-          docker run -d --name=petclinic -p 8081:8080 sowmyabv123/petclinic
+         docker run -d --name=hearti-health-app -p 80:80 sowmyabv123/hearti-health-app
 
   MyInstance2:
     Type: AWS::EC2::Instance
@@ -48,7 +48,7 @@ Resources:
           yum install docker
           service docker start
           usermod -a -G docker ec2-user
-          docker run -d --name=petclinic -p 8081:8080 sowmyabv123/petclinic
+          docker run -d --name=hearti-health-app -p 80:80 sowmyabv123/hearti-health-app
 
   ELBSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -56,9 +56,9 @@ Resources:
       GroupDescription: "ELB SG"
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
-          FromPort: 8081
+          FromPort: 80
           IpProtocol: tcp
-          ToPort: 8081
+          ToPort: 80
 
   ServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -70,9 +70,9 @@ Resources:
         IpProtocol: tcp
         ToPort: 22
       - SourceSecurityGroupName: !Ref ELBSecurityGroup
-        FromPort: 8081
+        FromPort: 80
         IpProtocol: tcp
-        ToPort: 8081
+        ToPort: 80
 
   MyLoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
@@ -90,7 +90,7 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref MyLoadBalancerTargetGroup
       LoadBalancerArn: !Ref MyLoadBalancer
-      Port: 8081
+      Port: 80
       Protocol: HTTP
 
   MyLoadBalancerTargetGroup:
@@ -99,15 +99,15 @@ Resources:
       HealthCheckIntervalSeconds: 30
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 3
-      Port: 8081
+      Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 5
       VpcId: !Ref ELBVPC
       Targets:
         - Id: !Ref MyInstance1
-          Port: 8081
+          Port: 80
         - Id: !Ref MyInstance2
-          Port: 8081
+          Port: 80
 Outputs:
   ELBDNSName:
     Description: The DNSName of the load balancer
