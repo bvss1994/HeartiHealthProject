@@ -5,8 +5,8 @@ pipeline {
                 steps {
                   echo "Deploying to Prod1"
                   sshagent(['ssh-key']) {
-                      sh "ssh -o StrictHostKeyChecking=no ec2-user@3.88.86.95 docker rm -f hearti-health-app || true"
-                      sh "ssh -o StrictHostKeyChecking=no ec2-user@3.88.86.95 docker run -d --name=hearti-health-app -p 8081:8080 sowmyabv123/hearti-health-app"
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@34.205.45.131 docker rm -f hearti-health-app || true"
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@34.205.45.131 docker run -d --name=hearti-health-app -p 80:80 sowmyabv123/hearti-health-app"
                   }
                 }
       }
@@ -14,8 +14,8 @@ pipeline {
                 steps {
                   echo "Deploying to Prod2"
                   sshagent(['ssh-key']) {
-                      sh "ssh -o StrictHostKeyChecking=no ec2-user@3.236.163.147 docker rm -f hearti-health-app || true"
-                      sh "ssh -o StrictHostKeyChecking=no ec2-user@3.236.163.147 docker run -d --name=hearti-health-app -p 8081:8080 sowmyabv123/hearti-health-app"
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@18.207.194.60 docker rm -f hearti-health-app || true"
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@18.207.194.60 docker run -d --name=hearti-health-app -p 80:80 sowmyabv123/hearti-health-app"
                   }
                 }
       }         
