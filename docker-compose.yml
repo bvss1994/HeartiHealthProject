@@ -1,0 +1,9 @@
+version: '2.3'
+
+services:
+  heartihealth-app:
+    hostname: localhost
+    container_name: heartihealth-app-container
+    build: .
+    ports:
+      - 80:80
