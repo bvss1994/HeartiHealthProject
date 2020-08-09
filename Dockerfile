@@ -1,12 +1,19 @@
-### STAGE 1: Build ###
-FROM node:14 AS build
+# Stage 1
+FROM node:14-alpine as node
+
 WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
-EXPOSE 8080
+
+COPY package*.json ./
+
 RUN npm install
+
 COPY . .
+
 RUN npm run build --prod
-### STAGE 2: Run ###
-FROM nginx:1.17.1-alpine
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html
-ENTRYPOINT [ "npm", "start" ]
+
+# Stage 2
+FROM nginx:1.13.12-alpine
+
+COPY --from=node /usr/src/app/dist /usr/share/nginx/html
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
